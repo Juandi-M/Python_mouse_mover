@@ -5,7 +5,6 @@
 # For pyatogui https://pyautogui.readthedocs.io/en/latest/ library.
 # Please run the following command: <import pyautogui> on your cmd or terminal
 
-from datetime import datetime, timedelta
 from time import sleep
 import time
 import pyautogui
