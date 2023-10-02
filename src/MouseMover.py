@@ -1,39 +1,24 @@
-# Copyright 2021, Juan Monge Jimenez, All rights reserved.
-
-# Version 2.0 - Code optimzation and documentation.
-
-# For pyatogui https://pyautogui.readthedocs.io/en/latest/ library.
-# Please run the following command: <import pyautogui> on your cmd or terminal
-
-from time import sleep
-import time
 import pyautogui
+import time
+import logging
 
+class MouseMover:
+    def __init__(self, callback=None):
+        self.should_run = True
+        self.callback = callback
+        self.logger = logging.getLogger('MouseMover')
 
-#  ---- Initial statement----
-print('Program running')
+    def start_moving(self):
+        try:
+            interval = 5  # 5 seconds
+            while self.should_run:
+                time.sleep(interval)
+                pyautogui.move(1, 0, duration=0.2)
+                pyautogui.move(-1, 0, duration=0.2)
+                if self.callback:
+                    self.callback("Mouse moved.")
+        except Exception as e:
+            self.logger.error(f"An error occurred while moving the mouse: {e}")
 
-# ----Pyautogui config statement----
-screenSize = screenWidth, screenHeight = pyautogui.size() # Get the size of the primary monitor.
-print("Your screen size is = ", screenSize)
-
-mouseCurrentPosition = currentMouseX, currentMouseY = pyautogui.position() # Get the XY position of the mouse.
-print ("your current mouse position is = ", mouseCurrentPosition)
-
-pyautogui.FAILSAFE = False
-
-# ---- Condition for intial mouse movement ---
-
-program_starts = time.time()
-
-while True:
-
-    sleep (10) #Change how often the mouse moves in seconds
-
-    #Counter for time in seconds the program has run since execution.
-    now = time.time()
-    print("It has been {0} seconds since mouse mover is started".format(now - program_starts))
-
-    #actual mose movement from left to right
-    pyautogui.moveTo(576, 450) # Move the mouse to XY coordinates. 
-    pyautogui.moveTo(1152, 450) # Move the mouse to XY coordinates. 
+    def stop_moving(self):
+        self.should_run = False
