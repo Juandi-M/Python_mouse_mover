@@ -5,6 +5,15 @@ import time
 import logging
 from concurrent.futures import ThreadPoolExecutor
 
+# Initialize logging
+logging.basicConfig(
+    filename='mouse_mover.log',
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+
 class MouseMoverApp:
     def __init__(self, root):
         self.root = root
@@ -31,6 +40,7 @@ class MouseMoverApp:
         self.start_time = None
 
     def update_runtime(self):
+        self.logger.info("Inside update_runtime.")
         if self.start_time is not None:
             elapsed_time = int(time.time() - self.start_time)
             hours, remainder = divmod(elapsed_time, 3600)
@@ -39,6 +49,7 @@ class MouseMoverApp:
             self.root.after(1000, self.update_runtime)
 
     def add_event(self, event):
+        self.logger.info(f"Event added: {event}")
         self.event_queue.append(event)
         if len(self.event_queue) > 5:
             self.event_queue.pop(0)
@@ -46,8 +57,10 @@ class MouseMoverApp:
         for event in self.event_queue:
             self.text_box.insert(END, event + '\n')
 
+
     def start_moving(self):
         try:
+            self.logger.info("MouseMoverApp: start_moving called")
             self.start_time = time.time()
             self.update_runtime()
             self.label.config(text="Mouse Mover is Running")
@@ -61,6 +74,7 @@ class MouseMoverApp:
 
     def stop_moving(self):
         try:
+            self.logger.info("MouseMoverApp: stop_moving called")
             self.mouse_mover.stop_moving()
             self.label.config(text="Mouse Mover is Stopped")
             self.add_event("Mouse Mover stopped.")
