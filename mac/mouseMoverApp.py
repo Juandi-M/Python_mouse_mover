@@ -13,7 +13,6 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-
 class MouseMoverApp:
     def __init__(self, root):
         self.root = root
